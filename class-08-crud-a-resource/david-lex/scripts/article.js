@@ -19,14 +19,9 @@
     return template(this);
   };
 
-  // TODO: Set up a DB table for articles.
+  // Done:  TODO: Set up a DB table for articles.
   Article.createTable = function(callback) {
     webDB.execute(
-      // 'CREATE TABLE IF NOT EXISTS articles(' +
-      //   'id INTEGER PRIMARY KEY, ' +
-      //   'title VARCHAR(255) NOT NULL. ' +
-      //   'author VARCHAR(255) NOT NULL' +
-      // ');',
       'CREATE TABLE IF NOT EXISTS articles(' +
       'id INTEGER PRIMARY KEY, ' +
       'title VARCHAR(255) NOT NULL, ' +
@@ -60,7 +55,7 @@
   };
 
 
-  // TODO: Insert an article instance into the database:
+  // done: TODO: Insert an article instance into the database:
   Article.prototype.insertRecord = function(callback) {
     webDB.execute(
       [
@@ -82,7 +77,8 @@
     webDB.execute(
       [
         {
-          /* ... */
+          'sql': 'DELETE FROM articles WHERE id = ?;',
+          'data': [this.id]
         }
       ],
       callback
@@ -93,7 +89,12 @@
   Article.prototype.updateRecord = function(callback) {
     webDB.execute(
       [
-        /* ... */
+        {
+          // 'sql': 'UPDATE articles SET title = ?, author = ?, authorUrl = ?, category = ?, publishedOn = ?, body = ?) WHERE id = ?;',
+          'sql': 'UPDATE articles SET title = ?, author = ?, authorUrl = ?, category = ?, publishedOn = ?, body = ? WHERE id = ?;',
+          'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.body, this.id]
+        }
+
       ],
       callback
     );
@@ -110,18 +111,14 @@
   // we need to retrieve the JSON and process it.
   // If the DB has data already, we'll load up the data (sorted!), and then hand off control to the View.
   Article.fetchAll = function(next) {
-    console.log('point a');
     webDB.execute('SELECT * FROM articles;', function(rows) {
-      console.log('point 1');
       if (rows.length) {
         // Now instanitate those rows with the .loadAll function, and pass control to the view.
-        console.log('point 2');
         Article.loadAll(rows);
         next();
       } else {
         $.getJSON('/data/hackerIpsum.json', function(rawData) {
           // Cache the json, so we don't need to request it next time:
-          console.log('point 3');
           rawData.forEach(function(item) {
             var article = new Article(item); // Instantiate an article based on item from JSON
             // Cache the newly-instantiated article in DB:
