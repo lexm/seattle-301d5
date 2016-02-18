@@ -66,7 +66,7 @@
   // callback path is then executed.  In this case, the next callback function
   // is articlesController.index().
   // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^=   =^..^=
-  
+
   articlesController.loadByCategory = function(ctx, next) {
     var categoryData = function(articlesInCategory) {
       ctx.articles = articlesInCategory;
@@ -77,6 +77,27 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+  // When the root path is loaded, this function checks to see whether
+  // Articles.all is already populated.  If it is, it sets the
+  // articles property of the context object to Article.all, and if not
+  // it fetches the article data and then sets the articles property of
+  // the context object to the data in Article.all.
+
+  // This method is run when the URL structure matches '/', which is the
+  // root path, and is used to initialize the article data on page load
+  // if necessary.  It first checks to see whether the main Article
+  // container property (Article.all) is currently populated with articles.
+  // If it is, it passes the data in Article.all into the articles property
+  // of the context object.  If Article.all does not contain any data, the
+  // function calls the Article.fetchAll method to load the articles from
+  // the SQL table or from a JSON data file, depending on whether the SQL
+  // is populated.  We then pass Article.fetchAll our newly created
+  // articleData function as a callback, which simply pushes the articles
+  // from Article.all into the article property of the context object.
+  // The method then fires the next function in the routes.js callback queue,
+  // which in this case is again articleController.index.
+
   articlesController.loadAll = function(ctx, next) {
     var articleData = function(allArticles) {
       ctx.articles = Article.all;
