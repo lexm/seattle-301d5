@@ -41,7 +41,7 @@
 // callback, which sets the "articles" property of the context object to
 // the results of the query. "loadByAuthor" then runs next() to execute
 // the next callback, which in this case will again be
-// articlesController.index(). 
+// articlesController.index().
 
   articlesController.loadByAuthor = function(ctx, next) {
     var authorData = function(articlesByAuthor) {
@@ -53,6 +53,20 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+  // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^=   =^..^=
+  // In the same vein as loadById and loadByAuthor, this method selects those
+  // articles where the article category matches the category passed through
+  // the URL.  Whenever the URL is in the form "/category/:categoryName", the
+  // :categoryName is extracted from the context object and passed through
+  // Article.findWhere() to query the main SQL table.  Article.findWhere() then
+  // fires the newly declared function "categoryData" as a callback. The
+  // "categoryData()" function sets the results of the query to the "articles"
+  // property of the context object.  The next() function in the routes.js
+  // callback path is then executed.  In this case, the next callback function
+  // is articlesController.index().
+  // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^=   =^..^=
+  
   articlesController.loadByCategory = function(ctx, next) {
     var categoryData = function(articlesInCategory) {
       ctx.articles = articlesInCategory;
