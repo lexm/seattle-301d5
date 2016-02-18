@@ -79,6 +79,9 @@
       page('/' + resource + '/' + $(this).val().replace(/\W+/g, '+')); // Replace any/all whitespace with a +
     });
   };
+
+  //TODO: remove corpse code. (We couldn't resist!)
+
   // articleView.handleAuthorFilter = function() {
   //   $('#author-filter').on('change', function() {
   //     if ($(this).val()) {
@@ -153,6 +156,21 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+  // This method sets the view state of the page.  It is called by the
+  // articlesController.index method.
+
+  // First this method shows the #articles section and hides all sibling
+  // sections.  It then removes all articles, and then cycles through
+  // the articles array passed to the method and uses the render function
+  // to generate a new article to be appended to the #articles section
+  // for each element of that array.  Once these articles are inserted
+  // into the DOM, it runs the populateFilters() method to populate the
+  // filters, and the handleFilters() method to attach an event handler
+  // to them.  Lastly, it trunctates each article to one paragraph.
+  // There is a "read all" link in each article to show the rest of the
+  // article content.
+
   articleView.index = function(articles) {
     $('#articles').show().siblings().hide();
 
@@ -163,6 +181,8 @@
 
     articleView.populateFilters();
     // COMMENT: What does this method do?  What is it's execution path?
+
+    // see long-winded description above.
     articleView.handleFilters();
 
     // DONE: Replace setTeasers with just the truncation logic, if needed:
