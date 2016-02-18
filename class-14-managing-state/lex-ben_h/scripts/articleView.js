@@ -182,7 +182,11 @@
     articleView.populateFilters();
     // COMMENT: What does this method do?  What is it's execution path?
 
-    // see long-winded description above.
+    // This method is being called to add an event handler to the select
+    // boxes.  It needs to be called after the populateFilters method so
+    // the event can be delegated to the elements of the select boxes.
+    // Otherwise the event handle will be irrelevant.
+
     articleView.handleFilters();
 
     // DONE: Replace setTeasers with just the truncation logic, if needed:
