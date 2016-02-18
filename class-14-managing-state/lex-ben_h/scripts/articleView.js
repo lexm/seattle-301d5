@@ -13,6 +13,27 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+// The populateFilters method gets two lists, one of unique article authors,
+// and the other of article categories. It then uses Handlebars to generate
+// options to append to the appropriate select list.
+
+// This method is called by articleView.index (which is itself called by
+// articleController.index). It then calls Article.allAuthors() to get an
+// array of unique author names, which are then mapped into a new array of
+// option tags using Handlebars via the template() function. If there's
+// only one entry under #author-filter (the default), the newly generated
+// option tags are appended there.
+
+// Next, the method uses a different technique to generate the option tags for
+// the category filter. It calls the Article.allCategories method to SELECT
+// a DISTINCT list of categories, which triggers an anonymous callback
+// function which first checks to see in the category filter is already
+// populated. If it's not, it maps the rows created by the allCategories
+// method to a new set of option tags built by Handlebars via the template()
+// function, which are then appended to the #category-filter element.
+
+
   articleView.populateFilters = function() {
     var options,
       template = Handlebars.compile($('#option-template').text());
