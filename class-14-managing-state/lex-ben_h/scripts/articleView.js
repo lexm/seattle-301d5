@@ -59,6 +59,20 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+// This method attaches an event handler that handles both filters. It uses
+// page.js to route to the articleController method corresponding to the
+// selection.
+
+// On selecting an option in one of the filters, the "resource" variable
+// (that is not explicitly declared, BTW) is set to the id of the filter
+// with the "-filter" suffix removed. A regular expression is used to replace
+// all white space in the selection value, and a URL using both the resource
+// and the selection value in the format "/resource/selection+value" is
+// generated, then processed using page(), which then routes to the appropriate
+// controller method.
+
+
   articleView.handleFilters = function() {
     $('#filters').one('change', 'select', function() {
       resource = this.id.replace('-filter', '');
